@@ -48,3 +48,13 @@ async def register(
     await session.flush()
 
     return models.UserResponse(id=user.id, username=user.username)
+
+
+@router.get(
+    '/me',
+    response_model=models.UserResponse
+)
+async def me(
+    user: models.User = fastapi.Depends(deps.get_user),
+) -> models.UserResponse:
+    return models.UserResponse(id=user.id, username=user.username)
