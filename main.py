@@ -1,10 +1,12 @@
 import fastapi
 import contextlib
+import fastapi.middleware.cors as cors
 
 
 @contextlib.asynccontextmanager
 async def lifespan(app_: fastapi.FastAPI):
     import api
+
 
     app_.include_router(api.router)
 
@@ -17,3 +19,11 @@ async def lifespan(app_: fastapi.FastAPI):
 
 
 app = fastapi.FastAPI(lifespan=lifespan)
+
+app.add_middleware(
+    cors.CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
