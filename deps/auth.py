@@ -19,7 +19,7 @@ async def get_user(
     stmt = (
         sqlmodel.select(models.User)
         .where(models.User.id == id_)
-        .options(sa_orm.selectinload('*'))
+        .options(sa_orm.selectinload("*"))
     )
     result = await session.execute(stmt)
     user: models.User = result.scalars().one_or_none()

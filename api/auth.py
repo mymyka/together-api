@@ -18,7 +18,7 @@ async def login(
     stmt = (
         sqlmodel.select(models.User)
         .where(models.User.username == username)
-        .options(orm.selectinload('*'))
+        .options(orm.selectinload("*"))
     )
     result = await session.execute(stmt)
     user: models.User = result.scalars().one_or_none()
@@ -40,7 +40,7 @@ async def register(
     stmt = (
         sqlmodel.select(models.User)
         .where(models.User.username == username)
-        .options(orm.selectinload('*'))
+        .options(orm.selectinload("*"))
     )
     result = await session.execute(stmt)
     user: models.User = result.scalars().one_or_none()
