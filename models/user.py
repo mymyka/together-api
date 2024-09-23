@@ -1,6 +1,7 @@
 import sqlmodel
 import typing as t
-import pydantic
+
+from .users_channels import UserChannel
 
 
 class User(sqlmodel.SQLModel, table=True):
@@ -8,7 +9,7 @@ class User(sqlmodel.SQLModel, table=True):
     username: str = sqlmodel.Field(max_length=100, unique=True)
     password: str
 
-
-class UserResponse(pydantic.BaseModel):
-    id: int
-    username: str
+    channels: t.List['Channel'] = sqlmodel.Relationship(  # type: ignore
+        link_model=UserChannel,
+        back_populates="users",
+    )

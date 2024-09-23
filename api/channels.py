@@ -1,0 +1,38 @@
+import fastapi
+import schemas
+import deps
+import sqlalchemy.ext.asyncio as sa
+import sqlmodel
+import models
+import typing as t
+
+router = fastapi.APIRouter()
+
+
+@router.get(
+    "/",
+    response_model=t.List[schemas.channel.Channel],
+)
+async def get_channels(
+        session: sa.AsyncSession = fastapi.Depends(deps.get_session),
+) -> t.List[schemas.channel.Channel]:
+    stmt = sqlmodel.select(models.Channel)
+    result = await session.execute(stmt)
+    channels = result.scalars().all()
+    return [schemas.channel.Channel.model_validate(channel) for channel in channels]
+
+
+@router.post(
+    "/",
+    response_model=schemas.channel.Channel,
+)
+async def create_channel(
+    name: str,
+    session: sa.AsyncSession = fastapi.Depends(deps.get_session),
+) -> schemas.channel.Channel:
+    channel = models.Channel(
+        name=name,
+    )
+    session.add(channel)
+    await session.flush()
+    return schemas.channel.Channel.model_validate(channel)

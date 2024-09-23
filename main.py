@@ -11,7 +11,6 @@ async def lifespan(app_: fastapi.FastAPI):
     import deps
     import models
 
-    models.SQLModel.metadata.drop_all(deps.sync_engine)
     models.SQLModel.metadata.create_all(deps.sync_engine)
 
     yield

@@ -3,19 +3,20 @@ import models
 import deps
 import sqlalchemy.ext.asyncio as sa
 import sqlmodel
+import schemas
 
 router = fastapi.APIRouter()
 
 
 @router.post(
     '/login',
-    response_model=models.UserResponse
+    response_model=schemas.user.UserResponse
 )
 async def login(
         username: str,
         password: str,
         session: sa.AsyncSession = fastapi.Depends(deps.get_session),
-) -> models.UserResponse:
+) -> schemas.user.UserResponse:
     stmt = sqlmodel.select(models.User).where(models.User.username == username)
     result = await session.execute(stmt)
     user: models.User = result.scalars().one_or_none()
@@ -23,18 +24,18 @@ async def login(
     if user is None or user.password != password:
         raise fastapi.HTTPException(status_code=404, detail='Incorrect username or password')
 
-    return models.UserResponse(id=user.id, username=user.username)
+    return schemas.user.UserResponse.model_validate(user)
 
 
 @router.post(
     '/register',
-    response_model=models.UserResponse
+    response_model=schemas.user.UserResponse
 )
 async def register(
     username: str,
     password: str,
     session: sa.AsyncSession = fastapi.Depends(deps.get_session),
-) -> models.UserResponse:
+) -> schemas.user.UserResponse:
     stmt = sqlmodel.select(models.User).where(models.User.username == username)
     result = await session.execute(stmt)
     user: models.User = result.scalars().one_or_none()
@@ -47,14 +48,14 @@ async def register(
     session.add(user)
     await session.flush()
 
-    return models.UserResponse(id=user.id, username=user.username)
+    return schemas.user.UserResponse.model_validate(user)
 
 
 @router.get(
     '/me',
-    response_model=models.UserResponse
+    response_model=schemas.user.UserResponse
 )
 async def me(
     user: models.User = fastapi.Depends(deps.get_user),
-) -> models.UserResponse:
-    return models.UserResponse(id=user.id, username=user.username)
+) -> schemas.user.UserResponse:
+    return schemas.user.UserResponse.model_validate(user)
