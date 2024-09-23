@@ -28,9 +28,9 @@ class Message(sqlmodel.SQLModel, table=True):
         )
     )
 
-    channel: 'Channel' = sqlmodel.Relationship(  # type: ignore
+    channel: "Channel" = sqlmodel.Relationship(  # type: ignore
         back_populates="messages"
     )
-    user: 'User' = sqlmodel.Relationship(  # type: ignore
+    user: "User" = sqlmodel.Relationship(  # type: ignore
         back_populates="messages"
     )

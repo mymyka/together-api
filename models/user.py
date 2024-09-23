@@ -9,7 +9,8 @@ class User(sqlmodel.SQLModel, table=True):
     username: str = sqlmodel.Field(max_length=100, unique=True)
     password: str
 
-    channels: t.List['Channel'] = sqlmodel.Relationship(  # type: ignore
+    channels: t.List["Channel"] = sqlmodel.Relationship(  # type: ignore
         link_model=UserChannel,
         back_populates="users",
+        sa_relationship_kwargs={"lazy": "selectin", "uselist": True},
     )
