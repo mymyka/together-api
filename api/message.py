@@ -45,7 +45,6 @@ async def disconnect(sid):
 
 @sio.server.on('send message')
 async def send_message(sid, data: t.Dict[t.Literal['channel_id', 'message'], t.Any]):
-    print('a')
     channel_id = data.get('channel_id')
     message = data.get('message')
     user_id = (await sio.server.get_session(sid)).get('user_id')
