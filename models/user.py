@@ -12,5 +12,9 @@ class User(sqlmodel.SQLModel, table=True):
     channels: t.List["Channel"] = sqlmodel.Relationship(  # type: ignore
         link_model=UserChannel,
         back_populates="users",
-        sa_relationship_kwargs={"lazy": "selectin", "uselist": True},
+        sa_relationship_kwargs={"lazy": "lazy", "uselist": True},
+    )
+    messages: t.List["Message"] = sqlmodel.Relationship(  # type: ignore
+        back_populates="user",
+        sa_relationship_kwargs={"lazy": "lazy", "uselist": True},
     )

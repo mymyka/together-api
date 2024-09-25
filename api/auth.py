@@ -9,12 +9,12 @@ import schemas
 router = fastapi.APIRouter()
 
 
-@router.post("/login", response_model=schemas.user.UserResponse)
+@router.post("/login", response_model=schemas.user.User)
 async def login(
     username: str,
     password: str,
     session: sa.AsyncSession = fastapi.Depends(deps.get_session),
-) -> schemas.user.UserResponse:
+) -> schemas.user.User:
     stmt = (
         sqlmodel.select(models.User)
         .where(models.User.username == username)
@@ -28,15 +28,15 @@ async def login(
             status_code=404, detail="Incorrect username or password"
         )
 
-    return schemas.user.UserResponse.model_validate(user)
+    return schemas.user.User.model_validate(user)
 
 
-@router.post("/register", response_model=schemas.user.UserResponse)
+@router.post("/register", response_model=schemas.user.User)
 async def register(
     username: str,
     password: str,
     session: sa.AsyncSession = fastapi.Depends(deps.get_session),
-) -> schemas.user.UserResponse:
+) -> schemas.user.User:
     stmt = (
         sqlmodel.select(models.User)
         .where(models.User.username == username)
@@ -53,11 +53,11 @@ async def register(
     session.add(user)
     await session.flush()
 
-    return schemas.user.UserResponse.model_validate(user)
+    return schemas.user.User.model_validate(user)
 
 
-@router.get("/me", response_model=schemas.user.UserResponse)
+@router.get("/me", response_model=schemas.user.User)
 async def me(
     user: models.User = fastapi.Depends(deps.get_user),
-) -> schemas.user.UserResponse:
-    return schemas.user.UserResponse.model_validate(user)
+) -> schemas.user.User:
+    return schemas.user.User.model_validate(user)

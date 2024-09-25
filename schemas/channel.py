@@ -1,4 +1,5 @@
 import pydantic
+import typing as t
 
 
 class Channel(pydantic.BaseModel):
