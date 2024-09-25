@@ -1,10 +1,6 @@
-import pydantic
-import typing as t
+from . import base
 
 
-class User(pydantic.BaseModel):
+class User(base.BaseSchema):
     id: int
     username: str
-
-    class Config:
-        from_attributes = True

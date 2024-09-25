@@ -25,12 +25,12 @@ async def get_channels(
 
 @router.get(
     "/info",
-    response_model=schemas.channel.ChannelInfo,
+    response_model=schemas.channel.Channel,
 )
 async def get_channel(
     channel: models.Channel = fastapi.Depends(deps.get_resource(models.Channel)),
-) -> schemas.channel.ChannelInfo:
-    return schemas.channel.ChannelInfo.model_validate(channel)
+) -> schemas.channel.Channel:
+    return schemas.channel.Channel.model_validate(channel)
 
 
 @router.post(
@@ -43,7 +43,6 @@ async def create_channel(
 ) -> schemas.channel.Channel:
     channel = models.Channel(
         name=name,
-        messages=[],
     )
     session.add(channel)
     await session.flush()

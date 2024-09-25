@@ -15,11 +15,7 @@ async def login(
     password: str,
     session: sa.AsyncSession = fastapi.Depends(deps.get_session),
 ) -> schemas.user.User:
-    stmt = (
-        sqlmodel.select(models.User)
-        .where(models.User.username == username)
-        .options(orm.selectinload("*"))
-    )
+    stmt = sqlmodel.select(models.User).where(models.User.username == username)
     result = await session.execute(stmt)
     user: models.User = result.scalars().one_or_none()
 
@@ -37,11 +33,7 @@ async def register(
     password: str,
     session: sa.AsyncSession = fastapi.Depends(deps.get_session),
 ) -> schemas.user.User:
-    stmt = (
-        sqlmodel.select(models.User)
-        .where(models.User.username == username)
-        .options(orm.selectinload("*"))
-    )
+    stmt = sqlmodel.select(models.User).where(models.User.username == username)
     result = await session.execute(stmt)
     user: models.User = result.scalars().one_or_none()
 

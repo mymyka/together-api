@@ -1,18 +1,6 @@
-import pydantic
-import typing as t
+from . import base
 
 
-class Channel(pydantic.BaseModel):
+class Channel(base.BaseSchema):
     id: int
     name: str
-
-    class Config:
-        from_attributes = True
-        orm_mode = True
-
-
-class ChannelInfo(Channel):
-
-    class Config:
-        from_attributes = True
-        orm_mode = True

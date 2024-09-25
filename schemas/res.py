@@ -1,5 +1,5 @@
-import pydantic
+from . import base
 
 
-class Ok(pydantic.BaseModel):
+class Ok(base.BaseSchema):
     message: str = "ok"
