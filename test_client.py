@@ -6,21 +6,16 @@ import time
 sio = socketio.Client()
 
 
-@sio.event
-def connect():
-    print('connection established')
+def get_message(data):
+    print('Get Message:', data)
 
 
-@sio.event
-def disconnect():
-    print('disconnected from server')
-
-
-@sio.event
-def response(data):
-    print('I received a response!', data)
-
+sio.on('get message', handler=get_message)
 
 # Connect
 sio.connect('http://localhost:8000')
+
+sio.emit('begin_chat', {'user_id': 1})
+sio.emit('send_message', {'channel_id': 1, 'message': 'Hello World!'})
+
 sio.wait()
