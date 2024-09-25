@@ -103,4 +103,5 @@ async def send_message(
         "message",
         {"channel_id": channel_id, "message": message},
         room=channel_id,
+        skip_sid=sid,
     )
