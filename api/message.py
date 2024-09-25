@@ -44,8 +44,8 @@ async def exit_from_chats(
 
 
 @sio.server.on("connect")
-async def connect(sid, environ):
-    user_id = environ.get("HTTP_X_USER_ID")
+async def connect(sid, environ, auth):
+    user_id = auth.get('x_user_id')
     if user_id is None:
         raise sio_exc.ConnectionRefusedError("user_id is required")
 
