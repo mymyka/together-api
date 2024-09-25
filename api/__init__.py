@@ -1,4 +1,5 @@
 from . import auth, channels
+from .message import *
 import fastapi
 
 router = fastapi.APIRouter()
