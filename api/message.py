@@ -1,5 +1,4 @@
 import typing
-
 import sio
 import socketio.exceptions as sio_exc
 import deps
