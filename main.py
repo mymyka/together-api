@@ -21,10 +21,10 @@ async def lifespan(app_: fastapi.FastAPI):
     app.add_route("/socket.io/", route=sio_app, methods=["GET", "POST"])
     app.add_websocket_route("/socket.io/", sio_app)
 
-    # @app.get("/hello")
-    # async def root():
-    #     await sio.server.emit("response", "hello everyone")
-    #     return {"message": "hello"}
+    @app.get("/hello")
+    async def root():
+        await sio.server.emit("response", "hello everyone")
+        return {"message": "hello"}
 
     yield
 
