@@ -54,7 +54,7 @@ async def create_channel(
 
 @router.post(
     "/join",
-    response_model=schemas.channel.Channel,
+    response_model=schemas.res.Ok,
 )
 async def join_channel(
     channel: models.Channel = fastapi.Depends(deps.get_resource(models.Channel)),

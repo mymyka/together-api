@@ -14,7 +14,3 @@ class User(sqlmodel.SQLModel, table=True):
         back_populates="users",
         sa_relationship_kwargs={"lazy": "selectin", "uselist": True},
     )
-    messages: t.List["Message"] = sqlmodel.Relationship(  # type: ignore
-        back_populates="user",
-        sa_relationship_kwargs={"lazy": "selectin", "uselist": True},
-    )

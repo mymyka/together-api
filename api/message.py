@@ -36,3 +36,25 @@ async def begin_chat(sid, data: t.Dict[t.Literal['user_id'], int]):
 
         for channel in user.channels:
             await sio.server.enter_room(sid, channel.id)
+
+
+@sio.server.event
+async def send_message(sid, data: t.Dict[t.Literal['channel_id', 'message'], t.Any]):
+    channel_id = data.get('channel_id')
+    message = data.get('message')
+
+    if channel_id is None:
+        raise sio_exc.ConnectionRefusedError('channel_id is required')
+
+    if message is None:
+        raise sio_exc.ConnectionRefusedError('message is required')
+
+    with deps.SessionFactory() as session:
+        stmt = sqlmodel.select(models.Channel).where(models.Channel.id == channel_id)
+        result = await session.execute(stmt)
+        channel = result.scalars().one_or_none()
+
+        if not channel:
+            raise sio_exc.ConnectionRefusedError('Channel not found')
+
+        await sio.server.emit('get_message', message, room=channel.id, skip_sid=sid)
