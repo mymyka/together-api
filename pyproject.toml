@@ -16,6 +16,9 @@ uvicorn = "^0.30.6"
 asyncpg = "^0.29.0"
 
 
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.6.7"
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
