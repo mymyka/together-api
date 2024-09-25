@@ -31,12 +31,12 @@ class Message(sqlmodel.SQLModel, table=True):
     channel: "Channel" = sqlmodel.Relationship(  # type: ignore
         back_populates="messages",
         sa_relationship_kwargs={
-            "lazy": "lazy",
+            "lazy": "selectin",
         },
     )
     user: "User" = sqlmodel.Relationship(  # type: ignore
         back_populates="messages",
         sa_relationship_kwargs={
-            "lazy": "lazy",
+            "lazy": "selectin",
         },
     )

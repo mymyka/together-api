@@ -50,7 +50,7 @@ async def join_channel(
         channel: models.Channel = fastapi.Depends(deps.get_resource(models.Channel)),
         user: models.User = fastapi.Depends(deps.get_user),
         session: sa.AsyncSession = fastapi.Depends(deps.get_session),
-) -> schemas.channel.Channel:
+) -> schemas.res.Ok:
     channel.users.append(user)
     await session.flush()
-    return schemas.channel.Channel.model_validate(channel)
+    return schemas.res.Ok()
