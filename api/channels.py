@@ -1,3 +1,5 @@
+import json
+
 import fastapi
 import schemas
 import deps
@@ -23,6 +25,16 @@ async def get_channels(
     result = await session.execute(stmt)
     channels = result.scalars().all()
     return [schemas.channel.Channel.model_validate(channel) for channel in channels]
+
+
+@router.get(
+    '/info',
+    response_model=schemas.channel.ChannelInfo,
+)
+async def get_channel(
+    channel: models.Channel = fastapi.Depends(deps.get_resource(models.Channel)),
+) -> schemas.channel.ChannelInfo:
+    return schemas.channel.ChannelInfo.model_validate(channel)
 
 
 @router.post(
