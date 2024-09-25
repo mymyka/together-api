@@ -17,9 +17,7 @@ router = fastapi.APIRouter()
 async def get_channels(
     session: sa.AsyncSession = fastapi.Depends(deps.get_session),
 ) -> t.List[schemas.channel.Channel]:
-    stmt = sqlmodel.select(models.Channel).options(
-        so.selectinload(models.Channel.messages).selectinload(models.Message.user),
-    )
+    stmt = sqlmodel.select(models.Channel)
     result = await session.execute(stmt)
     channels = result.scalars().all()
     return [schemas.channel.Channel.model_validate(channel) for channel in channels]
